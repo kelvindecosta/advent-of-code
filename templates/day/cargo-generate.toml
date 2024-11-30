@@ -1,0 +1,3 @@
+[placeholders]
+year = { prompt = "What year is this for?", type = "string" }
+day = { prompt = "What day is this for?", type = "string" }

@@ -1,0 +1,5 @@
+# Rust
+/target
+
+# Advent of Code
+**/input/*.txt
