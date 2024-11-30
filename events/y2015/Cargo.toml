@@ -1,0 +1,15 @@
+[package]
+name = "y2015"
+version = "0.1.0"
+edition.workspace = true
+
+[dependencies]
+aoc.workspace = true
+eyre.workspace = true
+
+[dev-dependencies]
+rstest.workspace = true
+
+[build-dependencies]
+aoc-build.workspace = true
+eyre.workspace = true
