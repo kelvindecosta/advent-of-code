@@ -41,6 +41,10 @@ Available recipes:
     test year day        # 🧪 Test the code for a specific day's puzzle
 ```
 
+## Solutions
+
+Here are [my solutions](./events) grouped by year and day.
+
 ## Credits
 
 - [Advent of Code](https://adventofcode.com/) - The fantastic website that hosts the challenges for free every year.
