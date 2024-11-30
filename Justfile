@@ -4,6 +4,7 @@ default:
 # 🎄 Scaffold boilerplate for a new year's event
 @make-event year:
   cargo generate --path templates/year --name y{{year}} --destination events --define year={{year}}
+  ./scripts/update-events-readme.sh {{year}}
 
 # ⬇️  Download input for a specific day's puzzle
 @download year day:
@@ -12,6 +13,7 @@ default:
 # 📅 Scaffold boilerplate for a new day's puzzle
 @make-puzzle year day:
   cargo generate --path templates/day --name day --destination events/y{{year}}/src --define year={{year}} --define day={{day}} --init
+  ./scripts/update-year-readme.sh {{year}} {{day}}
   ./scripts/declare-day-module.sh {{year}} {{day}}
   @just download {{year}} {{day}}
 
@@ -25,7 +27,7 @@ default:
 
 # 🚚 Send the answer for one part of a specific day's puzzle
 @submit year day part:
-  @just solve {{year}} {{day}} {{part}} | xargs -I {} aoc submit --year {{year}} --day {{day}} {{part}} {} --debug
+  @just solve {{year}} {{day}} {{part}} | xargs -I {} aoc submit --year {{year}} --day {{day}} {{part}} {}
 
 # 🧹 Lint the codebase
 @lint:
