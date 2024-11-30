@@ -19,12 +19,12 @@ mod tests {
   #[rstest]
   // #[case("", Ok(""))]
   fn test_p1_examples(#[case] input: &str, #[case] expected: Result<String>) {
-    assert_eq!(p1(input), expected, "input: {}", input);
+    assert_eq!(p1(input), expected, "input: {input}");
   }
 
   #[rstest]
   // #[case("", Ok(""))]
   fn test_p2_examples(#[case] input: &str, #[case] expected: Result<String>) {
-    assert_eq!(p2(input), expected, "input: {}", input);
+    assert_eq!(p2(input), expected, "input: {input}");
   }
 }

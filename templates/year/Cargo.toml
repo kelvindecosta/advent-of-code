@@ -6,6 +6,8 @@ edition.workspace = true
 [dependencies]
 aoc.workspace = true
 eyre.workspace = true
+fancy-regex.workspace = true
+lazy_static.workspace = true
 
 [dev-dependencies]
 rstest.workspace = true

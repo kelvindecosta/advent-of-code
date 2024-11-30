@@ -17,3 +17,4 @@ pub mod register {
   include!(concat!(env!("OUT_DIR"), "/register.rs"));
 }
 pub mod d01;
+pub mod d02;
