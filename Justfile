@@ -36,3 +36,4 @@ default:
 # 👔 Format the codebase
 @format:
   cargo +nightly fmt --all
+  prettier --write "**/*.md"
