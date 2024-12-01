@@ -1,11 +1,3 @@
-use std::str::FromStr;
-
-use eyre::Result;
-
-struct Module {
-  mass: u32,
-}
-
 fn calculate_fuel(mass: u32) -> u32 {
   (mass / 3) - 2
 }
@@ -19,26 +11,16 @@ fn calculate_recursive_fuel(mass: u32) -> u32 {
   }
 }
 
-impl FromStr for Module {
-  type Err = eyre::Error;
-
-  fn from_str(line: &str) -> Result<Self> {
-    Ok(Self {
-      mass: line.parse()?,
-    })
-  }
-}
-
 #[aoc(day01, part1)]
-fn p1(input: &[Module]) -> u32 {
-  input.iter().map(|module| calculate_fuel(module.mass)).sum()
+fn p1(input: &[u32]) -> u32 {
+  input.iter().map(|&mass| calculate_fuel(mass)).sum()
 }
 
 #[aoc(day01, part2)]
-fn p2(input: &[Module]) -> u32 {
+fn p2(input: &[u32]) -> u32 {
   input
     .iter()
-    .map(|module| calculate_recursive_fuel(module.mass))
+    .map(|&mass| calculate_recursive_fuel(mass))
     .sum()
 }
 

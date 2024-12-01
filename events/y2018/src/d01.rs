@@ -1,28 +1,14 @@
-use std::{collections::HashSet, str::FromStr};
+use std::collections::HashSet;
 
 use eyre::{bail, Result};
 
-struct Frequency {
-  value: i32,
-}
-
-impl FromStr for Frequency {
-  type Err = eyre::Error;
-
-  fn from_str(line: &str) -> Result<Self> {
-    Ok(Self {
-      value: line.parse()?,
-    })
-  }
-}
-
 #[aoc(day01, part1)]
-fn p1(input: &[Frequency]) -> i32 {
-  input.iter().map(|f| f.value).sum()
+fn p1(input: &[i32]) -> i32 {
+  input.iter().sum()
 }
 
 #[aoc(day01, part2)]
-fn p2(input: &[Frequency]) -> Result<i32> {
+fn p2(input: &[i32]) -> Result<i32> {
   let mut seen = HashSet::new();
   let mut sum = 0;
 
@@ -30,7 +16,7 @@ fn p2(input: &[Frequency]) -> Result<i32> {
     if !seen.insert(sum) {
       return Ok(sum);
     }
-    sum += f.value;
+    sum += f;
   }
 
   bail!("No frequency repeated");
