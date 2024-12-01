@@ -71,7 +71,17 @@ mod tests {
   #[case(")))", -3)]
   #[case(")())())", -3)]
   fn test_p1_examples(#[case] input: &str, #[case] expected: i32) {
-    assert_eq!(p1(&[input.parse().unwrap()]), expected, "input: {input}");
+    assert_eq!(
+      p1(
+        input
+          .lines()
+          .map(|line| line.parse().unwrap())
+          .collect::<Vec<_>>()
+          .as_slice()
+      ),
+      expected,
+      "input: {input}"
+    );
   }
 
   #[rstest]
@@ -79,7 +89,14 @@ mod tests {
   #[case("()())", 5)]
   fn test_p2_examples(#[case] input: &str, #[case] expected: i32) {
     assert_eq!(
-      p2(&[input.parse().unwrap()]).unwrap(),
+      p2(
+        input
+          .lines()
+          .map(|line| line.parse().unwrap())
+          .collect::<Vec<_>>()
+          .as_slice()
+      )
+      .unwrap(),
       expected,
       "input: {input}"
     );

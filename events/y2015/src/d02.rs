@@ -84,13 +84,33 @@ mod tests {
   #[case("2x3x4", 58)]
   #[case("1x1x10", 43)]
   fn test_p1_examples(#[case] input: &str, #[case] expected: u32) {
-    assert_eq!(p1(&[input.parse().unwrap()]), expected, "input: {input}",);
+    assert_eq!(
+      p1(
+        input
+          .lines()
+          .map(|line| line.parse().unwrap())
+          .collect::<Vec<_>>()
+          .as_slice()
+      ),
+      expected,
+      "input: {input}",
+    );
   }
 
   #[rstest]
   #[case("2x3x4", 34)]
   #[case("1x1x10", 14)]
   fn test_p2_examples(#[case] input: &str, #[case] expected: u32) {
-    assert_eq!(p2(&[input.parse().unwrap()]), expected, "input: {input}",);
+    assert_eq!(
+      p2(
+        input
+          .lines()
+          .map(|line| line.parse().unwrap())
+          .collect::<Vec<_>>()
+          .as_slice()
+      ),
+      expected,
+      "input: {input}",
+    );
   }
 }
