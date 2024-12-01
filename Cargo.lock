@@ -1090,6 +1090,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "y2019"
+version = "0.1.0"
+dependencies = [
+ "aoc",
+ "aoc-build",
+ "eyre",
+ "fancy-regex",
+ "lazy_static",
+ "rstest",
+]
+
+[[package]]
 name = "y2024"
 version = "0.1.0"
 dependencies = [
