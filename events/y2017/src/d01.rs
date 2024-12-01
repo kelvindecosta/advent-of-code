@@ -13,7 +13,7 @@ impl TryFrom<char> for Digit {
     value
       .to_digit(10)
       .map(|value| Self { value: value as u8 })
-      .ok_or_else(|| eyre::eyre!("Invalid digit: {}", value))
+      .ok_or_else(|| eyre::eyre!("Invalid digit: {value}"))
   }
 }
 
