@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use eyre::Result;
+use eyre::{eyre, Result};
 
 struct Digit {
   value: u8,
@@ -13,7 +13,7 @@ impl TryFrom<char> for Digit {
     value
       .to_digit(10)
       .map(|value| Self { value: value as u8 })
-      .ok_or_else(|| eyre::eyre!("Invalid digit: {value}"))
+      .ok_or_else(|| eyre!("Invalid digit: {value}"))
   }
 }
 

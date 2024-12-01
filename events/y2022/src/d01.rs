@@ -4,7 +4,7 @@ use std::{
   str::FromStr,
 };
 
-use eyre::Result;
+use eyre::{eyre, Result};
 
 #[derive(Clone, PartialEq, Eq)]
 struct ElfInventory {
@@ -38,7 +38,7 @@ impl FromStr for ElfInventory {
       .map(|line| {
         line
           .parse()
-          .map_err(|e| eyre::eyre!("Failed to parse food calorie: {e}"))
+          .map_err(|e| eyre!("Failed to parse food calorie: {e}"))
       })
       .collect::<Result<Vec<_>>>()?;
 
