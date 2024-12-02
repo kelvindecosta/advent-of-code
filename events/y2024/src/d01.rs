@@ -1,7 +1,8 @@
-use std::{collections::HashMap, str::FromStr};
+use std::str::FromStr;
 
 use eyre::{eyre, Result};
 use fancy_regex::Regex;
+use itertools::Itertools;
 use lazy_static::lazy_static;
 
 #[derive(Debug, Clone)]
@@ -41,7 +42,7 @@ impl FromStr for LocationPair {
 }
 
 impl LocationPair {
-  pub fn distance_apart(&self) -> u32 {
+  pub fn distance_apart(self) -> u32 {
     let [l1, l2] = self.location_ids;
     (l1 as i32 - l2 as i32).unsigned_abs()
   }
@@ -73,15 +74,14 @@ fn p1(input: &[LocationPair]) -> u32 {
   left_list.sort_unstable();
   right_list.sort_unstable();
 
-  let updated_pairs = left_list
+  left_list
     .iter()
     .zip(right_list.iter())
-    .map(|(l, r)| LocationPair {
-      location_ids: [*l, *r],
+    .map(|(&l, &r)| LocationPair {
+      location_ids: [l, r],
     })
-    .collect::<Vec<_>>();
-
-  updated_pairs.iter().map(LocationPair::distance_apart).sum()
+    .map(LocationPair::distance_apart)
+    .sum()
 }
 
 #[aoc(day01, part2)]
@@ -90,17 +90,11 @@ fn p2(input: &[LocationPair]) -> u32 {
     .unwrap()
     .into_left_right_lists();
 
-  let right_occurrences =
-    right_list
-      .iter()
-      .fold(HashMap::<u32, u32>::new(), |mut acc, &r| {
-        *acc.entry(r).or_insert(0) += 1;
-        acc
-      });
+  let right_occurrences = right_list.into_iter().counts();
 
   left_list
-    .iter()
-    .map(|&l| l * right_occurrences.get(&l).unwrap_or(&0))
+    .into_iter()
+    .map(|l| l * (right_occurrences.get(&l).copied().unwrap_or(0) as u32))
     .sum()
 }
 

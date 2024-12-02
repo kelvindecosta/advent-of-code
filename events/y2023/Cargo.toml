@@ -8,6 +8,7 @@ aoc.workspace = true
 eyre.workspace = true
 fancy-regex.workspace = true
 lazy_static.workspace = true
+itertools.workspace = true
 aho-corasick.workspace = true
 
 [dev-dependencies]
