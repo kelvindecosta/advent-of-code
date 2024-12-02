@@ -4,12 +4,12 @@ use eyre::{eyre, Result};
 use fancy_regex::Regex;
 use lazy_static::lazy_static;
 
-struct Gift {
+pub struct Gift {
   dimensions: [u32; 3],
 }
 
 lazy_static! {
-  static ref GIFT_DIMENSIONS_REGEX: Regex =
+  pub static ref GIFT_DIMENSIONS_REGEX: Regex =
     Regex::new(r"(\d+)x(\d+)x(\d+)").unwrap();
 }
 
@@ -40,7 +40,7 @@ impl FromStr for Gift {
 }
 
 impl Gift {
-  fn wrapping_paper_area(&self) -> u32 {
+  pub fn wrapping_paper_area(&self) -> u32 {
     let face_areas = self
       .dimensions
       .iter()
@@ -51,7 +51,7 @@ impl Gift {
     2 * face_areas.iter().sum::<u32>() + face_areas.iter().min().unwrap()
   }
 
-  fn ribbon_length(&self) -> u32 {
+  pub fn ribbon_length(&self) -> u32 {
     let face_perimeters = self
       .dimensions
       .iter()

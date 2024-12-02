@@ -5,12 +5,12 @@ use fancy_regex::Regex;
 use lazy_static::lazy_static;
 
 #[derive(Debug, Clone)]
-struct LocationPair {
+pub struct LocationPair {
   location_ids: [u32; 2],
 }
 
 lazy_static! {
-  static ref LOCATION_ID_PAIR_REGEX: Regex =
+  pub static ref LOCATION_ID_PAIR_REGEX: Regex =
     Regex::new(r"(\d+)\s+(\d+)").unwrap();
 }
 
@@ -41,16 +41,16 @@ impl FromStr for LocationPair {
 }
 
 impl LocationPair {
-  fn distance_apart(&self) -> u32 {
+  pub fn distance_apart(&self) -> u32 {
     let [l1, l2] = self.location_ids;
     (l1 as i32 - l2 as i32).unsigned_abs()
   }
 }
 
-struct LocationPairList(Vec<LocationPair>);
+pub struct LocationPairList(Vec<LocationPair>);
 
 impl LocationPairList {
-  fn into_left_right_lists(self) -> (Vec<u32>, Vec<u32>) {
+  pub fn into_left_right_lists(self) -> (Vec<u32>, Vec<u32>) {
     self.0.iter().map(|pair| pair.location_ids.into()).unzip()
   }
 }

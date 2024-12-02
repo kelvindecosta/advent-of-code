@@ -4,19 +4,19 @@ use aho_corasick::AhoCorasick;
 use eyre::{eyre, Result};
 use lazy_static::lazy_static;
 
-static DIGITS: [&str; 9] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-static DIGITS_SPELLED_OUT: [&str; 9] = [
+pub static DIGITS: [&str; 9] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+pub static DIGITS_SPELLED_OUT: [&str; 9] = [
   "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
 ];
 
 lazy_static! {
-  static ref DIGITS_AC: AhoCorasick = AhoCorasick::new(DIGITS).unwrap();
-  static ref DIGITS_SPELLED_OUT_AC: AhoCorasick =
+  pub static ref DIGITS_AC: AhoCorasick = AhoCorasick::new(DIGITS).unwrap();
+  pub static ref DIGITS_SPELLED_OUT_AC: AhoCorasick =
     AhoCorasick::new([DIGITS, DIGITS_SPELLED_OUT].concat()).unwrap();
 }
 
 #[derive(Debug)]
-struct Calibration {
+pub struct Calibration {
   value: u32,
 }
 
@@ -38,7 +38,7 @@ impl FromStr for Calibration {
 }
 
 #[derive(Debug)]
-struct BetterCalibration {
+pub struct BetterCalibration {
   value: u32,
 }
 

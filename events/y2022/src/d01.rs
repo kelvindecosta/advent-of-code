@@ -7,12 +7,12 @@ use std::{
 use eyre::{eyre, Result};
 
 #[derive(Clone, PartialEq, Eq)]
-struct ElfInventory {
+pub struct ElfInventory {
   food_calories: Vec<u32>,
 }
 
 impl ElfInventory {
-  fn total_calories(&self) -> u32 {
+  pub fn total_calories(&self) -> u32 {
     self.food_calories.iter().sum()
   }
 }

@@ -3,12 +3,12 @@ use std::{collections::HashSet, str::FromStr};
 use eyre::{bail, Result};
 
 #[derive(Debug, Clone, Copy)]
-enum Turn {
+pub enum Turn {
   Left = -1,
   Right = 1,
 }
 
-struct Movement {
+pub struct Movement {
   turn: Turn,
   distance: u32,
 }
@@ -29,7 +29,7 @@ impl FromStr for Movement {
   }
 }
 
-struct Instructions {
+pub struct Instructions {
   movements: Vec<Movement>,
 }
 
@@ -47,7 +47,7 @@ impl FromStr for Instructions {
 }
 
 #[derive(Clone, Copy, Default)]
-enum Direction {
+pub enum Direction {
   #[default]
   North,
   East,
@@ -56,7 +56,7 @@ enum Direction {
 }
 
 impl Direction {
-  fn make_turn(self, turn: Turn) -> Self {
+  pub fn make_turn(self, turn: Turn) -> Self {
     match (self as i32 + turn as i32 + 4) % 4 {
       0 => Direction::North,
       1 => Direction::East,
@@ -68,7 +68,7 @@ impl Direction {
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
-struct Position {
+pub struct Position {
   x: i32,
   y: i32,
 }
@@ -80,15 +80,15 @@ impl Default for Position {
 }
 
 impl Position {
-  fn origin() -> Self {
+  pub fn origin() -> Self {
     Self { x: 0, y: 0 }
   }
 
-  fn distance_from(self, other: Self) -> u32 {
+  pub fn distance_from(self, other: Self) -> u32 {
     (self.x - other.x).unsigned_abs() + (self.y - other.y).unsigned_abs()
   }
 
-  fn displace(&mut self, x: i32, y: i32) -> Self {
+  pub fn displace(&mut self, x: i32, y: i32) -> Self {
     Self {
       x: self.x + x,
       y: self.y + y,
@@ -97,13 +97,13 @@ impl Position {
 }
 
 #[derive(Default)]
-struct MoveState {
+pub struct MoveState {
   position: Position,
   direction: Direction,
 }
 
 impl MoveState {
-  fn move_forward(&mut self, distance: u32) -> Position {
+  pub fn move_forward(&mut self, distance: u32) -> Position {
     let (x, y) = match self.direction {
       Direction::North => (0, distance as i32),
       Direction::East => (distance as i32, 0),
@@ -114,7 +114,7 @@ impl MoveState {
     self.position
   }
 
-  fn make_movement(&mut self, movement: &Movement) -> Position {
+  pub fn make_movement(&mut self, movement: &Movement) -> Position {
     self.direction = self.direction.make_turn(movement.turn);
     self.move_forward(movement.distance);
     self.position

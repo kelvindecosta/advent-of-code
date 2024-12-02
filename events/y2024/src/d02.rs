@@ -2,12 +2,12 @@ use std::str::FromStr;
 
 use eyre::{eyre, Result};
 
-struct Report {
+pub struct Report {
   levels: Vec<i32>,
 }
 
 #[derive(Debug, PartialEq, Clone, Copy)]
-enum ChangeDirection {
+pub enum ChangeDirection {
   Increase,
   Decrease,
 }
@@ -28,7 +28,7 @@ impl FromStr for Report {
   }
 }
 
-fn find_bad_level(levels: &[i32]) -> Option<usize> {
+pub fn find_bad_level(levels: &[i32]) -> Option<usize> {
   let mut prev_change_direction = None;
 
   for (index, level) in levels.iter().skip(1).enumerate() {
@@ -58,11 +58,11 @@ fn find_bad_level(levels: &[i32]) -> Option<usize> {
 }
 
 impl Report {
-  fn is_safe(&self) -> bool {
+  pub fn is_safe(&self) -> bool {
     find_bad_level(&self.levels).is_none()
   }
 
-  fn is_safe_within_tolerance(&self) -> bool {
+  pub fn is_safe_within_tolerance(&self) -> bool {
     let bad_level = find_bad_level(&self.levels);
 
     if bad_level.is_none() {

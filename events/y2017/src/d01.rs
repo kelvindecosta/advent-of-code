@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use eyre::{eyre, Result};
 
-struct Digit {
+pub struct Digit {
   value: u8,
 }
 
@@ -17,12 +17,12 @@ impl TryFrom<char> for Digit {
   }
 }
 
-struct Captcha {
+pub struct Captcha {
   digits: Vec<Digit>,
 }
 
 impl Captcha {
-  fn solve(&self, offset: usize) -> u32 {
+  pub fn solve(&self, offset: usize) -> u32 {
     self
       .digits
       .iter()

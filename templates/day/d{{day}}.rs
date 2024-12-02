@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use eyre::{bail, Result};
 
-struct Thing {}
+pub struct Thing {}
 
 impl FromStr for Thing {
   type Err = eyre::Error;

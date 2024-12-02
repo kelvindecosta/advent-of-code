@@ -3,7 +3,7 @@ use std::str::FromStr;
 use eyre::{bail, Result};
 
 #[derive(Debug, Clone, Copy)]
-enum Direction {
+pub enum Direction {
   Up = 1,
   Down = -1,
   Stay = 0,
@@ -21,7 +21,7 @@ impl TryFrom<char> for Direction {
   }
 }
 
-struct Instructions {
+pub struct Instructions {
   directions: Vec<Direction>,
 }
 
