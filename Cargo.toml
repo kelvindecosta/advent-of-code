@@ -11,5 +11,6 @@ aoc = { git = "https://github.com/evenfurther/aoc" }
 aoc-build = { git = "https://github.com/evenfurther/aoc" }
 eyre = "0.6.8"
 fancy-regex = "0.14.0"
+itertools = "0.13.0"
 lazy_static = "1.5.0"
 rstest = "0.23.0"

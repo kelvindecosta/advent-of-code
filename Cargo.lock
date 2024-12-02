@@ -1073,6 +1073,7 @@ dependencies = [
  "aoc-build",
  "eyre",
  "fancy-regex",
+ "itertools",
  "lazy_static",
  "rstest",
 ]
