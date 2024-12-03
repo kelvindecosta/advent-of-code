@@ -24,11 +24,11 @@ impl TryFrom<char> for Direction {
   }
 }
 
-pub struct Instructions {
+pub struct Instruction {
   directions: Vec<Direction>,
 }
 
-impl FromStr for Instructions {
+impl FromStr for Instruction {
   type Err = eyre::Error;
 
   fn from_str(line: &str) -> Result<Self> {
@@ -99,7 +99,7 @@ impl KeyPad {
     self.keys[position.0][position.1].unwrap()
   }
 
-  pub fn code(&self, instructions: &[Instructions]) -> String {
+  pub fn code(&self, instructions: &[Instruction]) -> String {
     let mut position = self.start;
     let mut code = String::new();
 
@@ -113,12 +113,12 @@ impl KeyPad {
 }
 
 #[aoc(day02, part1)]
-fn p1(input: &[Instructions]) -> String {
+fn p1(input: &[Instruction]) -> String {
   KEYPAD_P1.code(input)
 }
 
 #[aoc(day02, part2)]
-fn p2(input: &[Instructions]) -> String {
+fn p2(input: &[Instruction]) -> String {
   KEYPAD_P2.code(input)
 }
 

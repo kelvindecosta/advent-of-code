@@ -1,7 +1,7 @@
 use std::str::FromStr;
 
 use aho_corasick::AhoCorasick;
-use eyre::{eyre, Result};
+use eyre::Result;
 use lazy_static::lazy_static;
 
 pub static DIGITS: [&str; 9] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -15,12 +15,24 @@ lazy_static! {
     AhoCorasick::new([DIGITS, DIGITS_SPELLED_OUT].concat()).unwrap();
 }
 
-#[derive(Debug)]
 pub struct Calibration {
-  value: u32,
+  first_digit: char,
+  last_digit: char,
 }
 
-impl FromStr for Calibration {
+impl Calibration {
+  pub fn value(&self) -> u32 {
+    format!("{}{}", self.first_digit, self.last_digit)
+      .parse::<u32>()
+      .unwrap()
+  }
+}
+
+pub struct CalibrationRecovery {
+  calibration: Calibration,
+}
+
+impl FromStr for CalibrationRecovery {
   type Err = eyre::Error;
 
   fn from_str(line: &str) -> Result<Self> {
@@ -29,20 +41,20 @@ impl FromStr for Calibration {
       .map(|m| DIGITS[m.pattern()])
       .collect::<Vec<_>>();
 
-    [*digits.first().unwrap(), *digits.last().unwrap()]
-      .join("")
-      .parse::<u32>()
-      .map(|value| Self { value })
-      .map_err(|e| eyre!("Failed to parse calibration: {e}"))
+    Ok(Self {
+      calibration: Calibration {
+        first_digit: digits.first().unwrap().chars().next().unwrap(),
+        last_digit: digits.last().unwrap().chars().next().unwrap(),
+      },
+    })
   }
 }
 
-#[derive(Debug)]
-pub struct BetterCalibration {
-  value: u32,
+pub struct BetterCalibrationRecovery {
+  calibration: Calibration,
 }
 
-impl FromStr for BetterCalibration {
+impl FromStr for BetterCalibrationRecovery {
   type Err = eyre::Error;
 
   fn from_str(line: &str) -> Result<Self> {
@@ -51,22 +63,29 @@ impl FromStr for BetterCalibration {
       .map(|m| DIGITS[m.pattern().as_usize() % DIGITS.len()])
       .collect::<Vec<_>>();
 
-    [*digits.first().unwrap(), *digits.last().unwrap()]
-      .join("")
-      .parse::<u32>()
-      .map(|value| Self { value })
-      .map_err(|e| eyre!("Failed to parse calibration: {e}"))
+    Ok(Self {
+      calibration: Calibration {
+        first_digit: digits.first().unwrap().chars().next().unwrap(),
+        last_digit: digits.last().unwrap().chars().next().unwrap(),
+      },
+    })
   }
 }
 
 #[aoc(day01, part1)]
-fn p1(input: &[Calibration]) -> u32 {
-  input.iter().map(|calibration| calibration.value).sum()
+fn p1(input: &[CalibrationRecovery]) -> u32 {
+  input
+    .iter()
+    .map(|recovery| recovery.calibration.value())
+    .sum()
 }
 
 #[aoc(day01, part2)]
-fn p2(input: &[BetterCalibration]) -> u32 {
-  input.iter().map(|calibration| calibration.value).sum()
+fn p2(input: &[BetterCalibrationRecovery]) -> u32 {
+  input
+    .iter()
+    .map(|recovery| recovery.calibration.value())
+    .sum()
 }
 
 #[cfg(test)]

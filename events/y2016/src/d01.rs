@@ -29,23 +29,6 @@ impl FromStr for Movement {
   }
 }
 
-pub struct Instructions {
-  movements: Vec<Movement>,
-}
-
-impl FromStr for Instructions {
-  type Err = eyre::Error;
-
-  fn from_str(line: &str) -> Result<Self> {
-    line
-      .trim()
-      .split(", ")
-      .map(Movement::from_str)
-      .collect::<Result<Vec<_>>>()
-      .map(|movements| Self { movements })
-  }
-}
-
 #[derive(Clone, Copy, Default)]
 pub enum Direction {
   #[default]
@@ -121,10 +104,9 @@ impl MoveState {
   }
 }
 
-#[aoc(day01, part1)]
-fn p1(input: &[Instructions]) -> u32 {
-  input[0]
-    .movements
+#[aoc(day01, part1, separator = ", ")]
+fn p1(input: &[Movement]) -> u32 {
+  input
     .iter()
     .fold(MoveState::default(), |mut state, movement| {
       state.make_movement(movement);
@@ -134,12 +116,12 @@ fn p1(input: &[Instructions]) -> u32 {
     .distance_from(Position::origin())
 }
 
-#[aoc(day01, part2)]
-fn p2(input: &[Instructions]) -> Result<u32> {
+#[aoc(day01, part2, separator = ", ")]
+fn p2(input: &[Movement]) -> Result<u32> {
   let mut visited = HashSet::new();
   let mut state = MoveState::default();
 
-  for movement in &input[0].movements {
+  for movement in input {
     for step in 0..movement.distance {
       let new_position = match step {
         0 => state.make_movement(&Movement {
@@ -172,8 +154,8 @@ mod tests {
     assert_eq!(
       p1(
         input
-          .lines()
-          .map(|line| line.parse().unwrap())
+          .split(", ")
+          .map(|part| part.parse().unwrap())
           .collect::<Vec<_>>()
           .as_slice()
       ),
@@ -188,8 +170,8 @@ mod tests {
     assert_eq!(
       p2(
         input
-          .lines()
-          .map(|line| line.parse().unwrap())
+          .split(", ")
+          .map(|part| part.parse().unwrap())
           .collect::<Vec<_>>()
           .as_slice()
       )

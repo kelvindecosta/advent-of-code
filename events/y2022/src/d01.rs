@@ -46,30 +46,24 @@ impl FromStr for ElfInventory {
   }
 }
 
-#[aoc(day01, part1)]
-fn p1(input: &str) -> u32 {
+#[aoc(day01, part1, separator = "\n\n")]
+fn p1(input: &[ElfInventory]) -> u32 {
   input
-    .trim()
-    .split("\n\n")
-    .map(|group| group.parse().unwrap())
-    .fold(None, |result, elf_inventory: ElfInventory| {
-      Some(result.map_or(elf_inventory.clone(), |r| max(elf_inventory, r)))
+    .iter()
+    .fold(None, |result, elf_inventory| {
+      Some(
+        result.map_or(elf_inventory.clone(), |r| max(elf_inventory.clone(), r)),
+      )
     })
     .unwrap()
     .total_calories()
 }
 
-#[aoc(day01, part2)]
-fn p2(input: &str) -> u32 {
-  let elf_inventories: Vec<ElfInventory> = input
-    .trim()
-    .split("\n\n")
-    .map(|group| group.parse().unwrap())
-    .collect::<Vec<_>>();
-
+#[aoc(day01, part2, separator = "\n\n")]
+fn p2(input: &[ElfInventory]) -> u32 {
   let mut top_three = BinaryHeap::new();
 
-  for elf_inventory in elf_inventories {
+  for elf_inventory in input {
     top_three.push(Reverse(elf_inventory.clone()));
 
     if top_three.len() > 3 {
@@ -108,7 +102,18 @@ mod tests {
     24000
   )]
   fn test_p1_examples(#[case] input: &str, #[case] expected: u32) {
-    assert_eq!(p1(input), expected, "input: {input}");
+    assert_eq!(
+      p1(
+        input
+          .trim()
+          .split("\n\n")
+          .map(|line| line.parse().unwrap())
+          .collect::<Vec<_>>()
+          .as_slice()
+      ),
+      expected,
+      "input: {input}"
+    );
   }
 
   #[rstest]
@@ -130,6 +135,17 @@ mod tests {
     45000
   )]
   fn test_p2_examples(#[case] input: &str, #[case] expected: u32) {
-    assert_eq!(p2(input), expected, "input: {input}");
+    assert_eq!(
+      p2(
+        input
+          .trim()
+          .split("\n\n")
+          .map(|line| line.parse().unwrap())
+          .collect::<Vec<_>>()
+          .as_slice()
+      ),
+      expected,
+      "input: {input}"
+    );
   }
 }
