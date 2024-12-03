@@ -65,6 +65,7 @@ fn p2(input: &[ElfInventory]) -> u32 {
   let mut top_three = BinaryHeap::new();
 
   for elf_inventory in input {
+    // Treat the BinaryHeap as a max-heap by reversing the order of the elements
     top_three.push(Reverse(elf_inventory.clone()));
 
     if top_three.len() > 3 {

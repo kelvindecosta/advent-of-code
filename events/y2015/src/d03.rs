@@ -69,6 +69,7 @@ fn p2(input: &[u8]) -> u32 {
   let mut visited = HashSet::new();
   visited.insert(Position::default());
 
+  // Split the input into two halves and process them separately
   for index in 0..2 {
     input
       .iter()

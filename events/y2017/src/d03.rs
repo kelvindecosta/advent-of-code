@@ -14,6 +14,7 @@ pub enum Direction {
 impl Direction {
   #[must_use]
   pub fn next(&self) -> Self {
+    // Going counter-clockwise, so add 1 to the current direction
     FromPrimitive::from_u32((*self as u32 + 1) % 4).unwrap()
   }
 }
@@ -57,6 +58,7 @@ impl Position {
   pub fn neighbours(&self) -> Vec<Self> {
     (-1..=1)
       .flat_map(|x| (-1..=1).map(move |y| (x, y)))
+      // Skip the origin
       .filter(|&(x, y)| x != 0 || y != 0)
       .map(|(x, y)| Self {
         x: self.x + x,
@@ -69,10 +71,15 @@ impl Position {
 #[aoc(day03, part1)]
 fn p1(input: &str) -> u32 {
   let num: u32 = input.trim().parse().unwrap();
+  // The last number of the nth ring will be the square of the nth odd number
   let ring = (num as f64).sqrt().ceil() as u32 / 2;
   if ring == 0 {
     0
   } else {
+    // The net distance from the center is the sum of:
+    // - the distance from the center to the ring
+    // - the distance from the number to the center of the corresponding side of
+    //   the ring
     ring + (((num - 1) % (2 * ring)) as i32 - ring as i32).unsigned_abs()
   }
 }

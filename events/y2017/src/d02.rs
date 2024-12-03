@@ -37,6 +37,8 @@ impl SpreadSheetRow {
       .combinations(2)
       .find_map(|pair| {
         let (&v, &w) = (pair[0], pair[1]);
+        // The quotient of the two values if one is divisible by the other.
+        // Dividing the larger value by the smaller value
         if v % w == 0 {
           Some(v / w)
         } else if w % v == 0 {

@@ -43,6 +43,8 @@ pub enum Direction {
 impl Direction {
   #[must_use]
   pub fn make_turn(self, turn: Turn) -> Self {
+    // Add the number of turns (either -1 or 1) to the current direction
+    // and wrap to the range 0..4 (adding 4 to avoid negative numbers)
     FromPrimitive::from_i32((self as i32 + turn as i32 + 4) % 4).unwrap()
   }
 }
@@ -122,6 +124,8 @@ fn p2(input: &[Movement]) -> Result<u32> {
   let mut state = MoveState::default();
 
   for movement in input {
+    // Move one step at a time, checking if each position on the way has been
+    // visited
     for step in 0..movement.distance {
       let new_position = match step {
         0 => state.make_movement(&Movement {

@@ -29,6 +29,7 @@ impl Captcha {
       .iter()
       .enumerate()
       .filter(|(i, digit)| {
+        // Check if the current digit is equal to the digit one after the offset
         digit.value == self.digits[(i + offset) % self.digits.len()].value
       })
       .map(|(_, digit)| digit.value as u32)

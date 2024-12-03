@@ -36,6 +36,7 @@ pub fn find_bad_level(levels: &[i32]) -> Option<usize> {
     let change = level - levels[index];
     let change_abs = change.abs();
 
+    // Change must be between 1 and 3
     if !(1..=3).contains(&change_abs) {
       return Some(index);
     }
@@ -46,6 +47,7 @@ pub fn find_bad_level(levels: &[i32]) -> Option<usize> {
       _ => None,
     };
 
+    // Change direction must not change
     if curr_change_direction.is_some_and(|curr| {
       prev_change_direction.is_some_and(|prev| prev != curr)
     }) {
@@ -73,6 +75,8 @@ impl Report {
     }
 
     let bad_level = bad_level.unwrap() as isize;
+
+    // Try removing either the bad level or the level before or after it
     [bad_level - 1, bad_level, bad_level + 1]
       .iter()
       .filter(|&index| (0..self.levels.len() as isize).contains(index))

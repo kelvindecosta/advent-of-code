@@ -49,28 +49,10 @@ impl LocationPair {
   }
 }
 
-pub struct LocationPairList(Vec<LocationPair>);
-
-impl LocationPairList {
-  #[must_use] pub fn into_left_right_lists(self) -> (Vec<u32>, Vec<u32>) {
-    self.0.iter().map(|pair| pair.location_ids.into()).unzip()
-  }
-}
-
-impl TryFrom<Vec<LocationPair>> for LocationPairList {
-  type Error = eyre::Error;
-
-  fn try_from(value: Vec<LocationPair>) -> Result<Self> {
-    Ok(Self(value))
-  }
-}
-
 #[aoc(day01, part1)]
 fn p1(input: &[LocationPair]) -> u32 {
-  let (mut left_list, mut right_list) =
-    LocationPairList::try_from(input.to_vec())
-      .unwrap()
-      .into_left_right_lists();
+  let (mut left_list, mut right_list): (Vec<_>, Vec<_>) =
+    input.iter().map(|pair| pair.location_ids.into()).unzip();
 
   left_list.sort_unstable();
   right_list.sort_unstable();
@@ -87,9 +69,8 @@ fn p1(input: &[LocationPair]) -> u32 {
 
 #[aoc(day01, part2)]
 fn p2(input: &[LocationPair]) -> u32 {
-  let (left_list, right_list) = LocationPairList::try_from(input.to_vec())
-    .unwrap()
-    .into_left_right_lists();
+  let (left_list, right_list): (Vec<_>, Vec<_>) =
+    input.iter().map(|pair| pair.location_ids.into()).unzip();
 
   let right_occurrences = right_list.into_iter().counts();
 

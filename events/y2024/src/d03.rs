@@ -55,6 +55,7 @@ impl FromStr for Instructions {
           captures.get(4).is_some(),
         );
 
+        // Conditionally enable or disable the operation
         if to_enable || to_disable {
           enabled = to_enable;
         }

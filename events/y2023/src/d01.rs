@@ -61,6 +61,7 @@ impl FromStr for BetterCalibrationRecovery {
   fn from_str(line: &str) -> Result<Self> {
     let digits = DIGITS_SPELLED_OUT_AC
       .find_overlapping_iter(line)
+      // Map the spelling of the digit to the digit itself
       .map(|m| DIGITS[m.pattern().as_usize() % DIGITS.len()])
       .collect::<Vec<_>>();
 

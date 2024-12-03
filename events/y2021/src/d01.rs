@@ -4,6 +4,7 @@ fn p1(input: &[u32]) -> u32 {
     .iter()
     .skip(1)
     .enumerate()
+    // Check if the current digit is greater than the previous digit
     .filter(|(index, &value)| input[*index] < value)
     .count() as u32
 }
@@ -16,6 +17,7 @@ fn p2(input: &[u32]) -> u32 {
     .iter()
     .skip(2)
     .enumerate()
+    // Check if the current sum is greater than the previous sum
     .filter(|(index, &value)| {
       let curr_sum = input[*index] + input[*index + 1] + value;
       let is_increasing = prev_sum.is_some_and(|prev_sum| prev_sum < curr_sum);

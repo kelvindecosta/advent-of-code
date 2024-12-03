@@ -11,6 +11,8 @@ impl Triplet {
   #[must_use]
   pub const fn is_valid(&self) -> bool {
     let [a, b, c] = self.side_lengths;
+    // The sum of the lengths of any two sides must be greater than the length
+    // of the remaining side
     a + b > c && a + c > b && b + c > a
   }
 }
@@ -40,11 +42,13 @@ fn p1(input: &[Triplet]) -> u32 {
 
 #[aoc(day03, part2)]
 fn p2(input: &[Triplet]) -> u32 {
+  // Split the input into chunks of 3
   input
     .iter()
     .map(|triplet| triplet.side_lengths)
     .chunks(3)
     .into_iter()
+    // Within each chunk, transpose the sides to get the sides of the triangles
     .flat_map(|chunk| {
       let chunk = chunk.collect::<Vec<_>>();
 
