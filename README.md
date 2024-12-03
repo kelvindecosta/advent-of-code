@@ -30,6 +30,7 @@ just
 
 ```
 Available recipes:
+    debug year day part  # 🐞 Run the code for one part of a specific day's puzzle on the input with diagnostic messages
     default
     download year day    # ⬇️ Download input for a specific day's puzzle
     format               # 👔 Format the codebase

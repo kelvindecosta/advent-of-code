@@ -21,6 +21,10 @@ default:
 @test year day:
   cargo test --package y{{year}} d{{day}}
 
+# 🐞 Run the code for one part of a specific day's puzzle on the input with diagnostic messages
+@debug year day part:
+  cargo run --bin y{{year}} -- --day {{day}} --part {{part}} --input events/y{{year}}/input/d{{day}}.txt
+
 # 🧩 Execute the code for one part of a specific day's puzzle on the input
 @solve year day part:
   cargo run --quiet --bin y{{year}} -- --day {{day}} --part {{part}} --input events/y{{year}}/input/d{{day}}.txt | awk -F': ' '{print $2}' | xargs
