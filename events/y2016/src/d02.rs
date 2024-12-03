@@ -67,6 +67,7 @@ lazy_static! {
 }
 
 impl KeyPad {
+  #[must_use]
   pub fn follow_directions(
     &self,
     directions: &[Direction],
@@ -95,10 +96,12 @@ impl KeyPad {
     position
   }
 
+  #[must_use]
   pub fn press(&self, position: (usize, usize)) -> char {
     self.keys[position.0][position.1].unwrap()
   }
 
+  #[must_use]
   pub fn code(&self, instructions: &[Instruction]) -> String {
     let mut position = self.start;
     let mut code = String::new();

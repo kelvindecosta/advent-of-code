@@ -17,3 +17,6 @@ rstest.workspace = true
 [build-dependencies]
 aoc-build.workspace = true
 eyre.workspace = true
+
+[lints]
+workspace = true

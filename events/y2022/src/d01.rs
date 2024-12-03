@@ -12,6 +12,7 @@ pub struct ElfInventory {
 }
 
 impl ElfInventory {
+  #[must_use]
   pub fn total_calories(&self) -> u32 {
     self.food_calories.iter().sum()
   }
@@ -25,7 +26,7 @@ impl PartialOrd for ElfInventory {
 
 impl Ord for ElfInventory {
   fn cmp(&self, other: &Self) -> Ordering {
-    ElfInventory::partial_cmp(self, other).unwrap()
+    Self::partial_cmp(self, other).unwrap()
   }
 }
 

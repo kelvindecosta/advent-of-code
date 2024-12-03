@@ -6,7 +6,7 @@ pub struct Report {
   levels: Vec<i32>,
 }
 
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum ChangeDirection {
   Increase,
   Decrease,
@@ -28,6 +28,7 @@ impl FromStr for Report {
   }
 }
 
+#[must_use]
 pub fn find_bad_level(levels: &[i32]) -> Option<usize> {
   let mut prev_change_direction = None;
 
@@ -58,10 +59,12 @@ pub fn find_bad_level(levels: &[i32]) -> Option<usize> {
 }
 
 impl Report {
+  #[must_use]
   pub fn is_safe(&self) -> bool {
     find_bad_level(&self.levels).is_none()
   }
 
+  #[must_use]
   pub fn is_safe_within_tolerance(&self) -> bool {
     let bad_level = find_bad_level(&self.levels);
 

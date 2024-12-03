@@ -20,13 +20,16 @@ impl FromStr for SpreadSheetRow {
 }
 
 impl SpreadSheetRow {
+  #[must_use]
   pub fn get_min_max_checksum(&self) -> u32 {
     match self.values.iter().minmax() {
+      // Range
       MinMax(v1, v2) => v2 - v1,
       _ => unreachable!(),
     }
   }
 
+  #[must_use]
   pub fn get_evenly_divisible_pair_checksum(&self) -> u32 {
     self
       .values

@@ -12,9 +12,9 @@ impl TryFrom<char> for Direction {
 
   fn try_from(value: char) -> Result<Self> {
     match value {
-      '(' => Ok(Direction::Up),
-      ')' => Ok(Direction::Down),
-      _ => Ok(Direction::Stay),
+      '(' => Ok(Self::Up),
+      ')' => Ok(Self::Down),
+      _ => Ok(Self::Stay),
     }
   }
 }

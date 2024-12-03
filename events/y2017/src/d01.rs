@@ -22,6 +22,7 @@ pub struct Captcha {
 }
 
 impl Captcha {
+  #[must_use]
   pub fn solve(&self, offset: usize) -> u32 {
     self
       .digits

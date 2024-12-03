@@ -15,10 +15,10 @@ impl TryFrom<char> for Direction {
 
   fn try_from(value: char) -> Result<Self> {
     match value {
-      '^' => Ok(Direction::Up),
-      'v' => Ok(Direction::Down),
-      '<' => Ok(Direction::Left),
-      '>' => Ok(Direction::Right),
+      '^' => Ok(Self::Up),
+      'v' => Ok(Self::Down),
+      '<' => Ok(Self::Left),
+      '>' => Ok(Self::Right),
       _ => bail!("Invalid direction: {value}"),
     }
   }
@@ -31,6 +31,7 @@ pub struct Position {
 }
 
 impl Position {
+  #[must_use]
   pub fn deliver(&mut self, direction: Direction) -> Self {
     let (x_diff, y_diff) = match direction {
       Direction::Up => (0, 1),

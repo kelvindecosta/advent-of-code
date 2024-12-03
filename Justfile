@@ -34,8 +34,8 @@ default:
   @just solve {{year}} {{day}} {{part}} | xargs -I {} aoc submit --year {{year}} --day {{day}} {{part}} {}
 
 # 🧹 Lint the codebase
-@lint:
-  cargo clippy --all-targets --all-features -- -D warnings
+@lint *FLAGS:
+  cargo clippy {{FLAGS}}
 
 # 👔 Format the codebase
 @format:

@@ -42,7 +42,8 @@ impl FromStr for LocationPair {
 }
 
 impl LocationPair {
-  pub fn distance_apart(self) -> u32 {
+  #[must_use]
+  pub const fn distance_apart(self) -> u32 {
     let [l1, l2] = self.location_ids;
     (l1 as i32 - l2 as i32).unsigned_abs()
   }
@@ -51,7 +52,7 @@ impl LocationPair {
 pub struct LocationPairList(Vec<LocationPair>);
 
 impl LocationPairList {
-  pub fn into_left_right_lists(self) -> (Vec<u32>, Vec<u32>) {
+  #[must_use] pub fn into_left_right_lists(self) -> (Vec<u32>, Vec<u32>) {
     self.0.iter().map(|pair| pair.location_ids.into()).unzip()
   }
 }

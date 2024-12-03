@@ -1,7 +1,9 @@
-pub fn calculate_fuel(mass: u32) -> u32 {
+#[must_use]
+pub const fn calculate_fuel(mass: u32) -> u32 {
   (mass / 3) - 2
 }
 
+#[must_use]
 pub fn calculate_recursive_fuel(mass: u32) -> u32 {
   let fuel = calculate_fuel(mass);
   if fuel <= (2 * 3) {

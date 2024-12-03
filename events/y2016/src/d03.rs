@@ -8,7 +8,8 @@ pub struct Triplet {
 }
 
 impl Triplet {
-  pub fn is_valid(&self) -> bool {
+  #[must_use]
+  pub const fn is_valid(&self) -> bool {
     let [a, b, c] = self.side_lengths;
     a + b > c && a + c > b && b + c > a
   }
@@ -54,7 +55,7 @@ fn p2(input: &[Triplet]) -> u32 {
         }
       })
     })
-    .filter(|triplet| triplet.is_valid())
+    .filter(Triplet::is_valid)
     .count() as u32
 }
 

@@ -19,13 +19,15 @@ pub struct Operation {
 }
 
 impl Operation {
-  fn value(&self) -> u32 {
+  #[must_use]
+  pub const fn value(&self) -> u32 {
     match &self.op {
       OperationType::Multiply(a, b) => (*a as u32) * (*b as u32),
     }
   }
 
-  fn conditional_value(&self) -> u32 {
+  #[must_use]
+  pub const fn conditional_value(&self) -> u32 {
     if self.enabled {
       self.value()
     } else {
@@ -54,7 +56,7 @@ impl FromStr for Instructions {
         );
 
         if to_enable || to_disable {
-          enabled = to_enable
+          enabled = to_enable;
         }
 
         if let (Some(a), Some(b)) = (a, b) {

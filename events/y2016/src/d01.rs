@@ -1,6 +1,8 @@
-use std::{collections::HashSet, mem::transmute, str::FromStr};
+use std::{collections::HashSet, str::FromStr};
 
 use eyre::{bail, Result};
+use num_derive::FromPrimitive;
+use num_traits::FromPrimitive;
 
 #[derive(Debug, Clone, Copy)]
 pub enum Turn {
@@ -25,12 +27,11 @@ impl FromStr for Movement {
 
     let distance = text[1..].parse()?;
 
-    Ok(Movement { turn, distance })
+    Ok(Self { turn, distance })
   }
 }
 
-#[repr(i32)]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy, Default, FromPrimitive)]
 pub enum Direction {
   #[default]
   North,
@@ -40,8 +41,9 @@ pub enum Direction {
 }
 
 impl Direction {
+  #[must_use]
   pub fn make_turn(self, turn: Turn) -> Self {
-    unsafe { transmute((self as i32 + turn as i32 + 4) % 4) }
+    FromPrimitive::from_i32((self as i32 + turn as i32 + 4) % 4).unwrap()
   }
 }
 
@@ -58,14 +60,17 @@ impl Default for Position {
 }
 
 impl Position {
-  pub fn origin() -> Self {
+  #[must_use]
+  pub const fn origin() -> Self {
     Self { x: 0, y: 0 }
   }
 
-  pub fn distance_from(self, other: Self) -> u32 {
+  #[must_use]
+  pub const fn distance_from(self, other: Self) -> u32 {
     (self.x - other.x).unsigned_abs() + (self.y - other.y).unsigned_abs()
   }
 
+  #[must_use]
   pub fn displace(&mut self, x: i32, y: i32) -> Self {
     Self {
       x: self.x + x,

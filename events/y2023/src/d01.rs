@@ -21,6 +21,7 @@ pub struct Calibration {
 }
 
 impl Calibration {
+  #[must_use]
   pub fn value(&self) -> u32 {
     format!("{}{}", self.first_digit, self.last_digit)
       .parse::<u32>()

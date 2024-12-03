@@ -1,7 +1,9 @@
-use std::{collections::HashMap, mem::transmute};
+use std::collections::HashMap;
 
-#[repr(u32)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+use num_derive::FromPrimitive;
+use num_traits::FromPrimitive;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, FromPrimitive)]
 pub enum Direction {
   Right,
   Up,
@@ -10,8 +12,9 @@ pub enum Direction {
 }
 
 impl Direction {
+  #[must_use]
   pub fn next(&self) -> Self {
-    unsafe { transmute((*self as u32 + 1) % 4) }
+    FromPrimitive::from_u32((*self as u32 + 1) % 4).unwrap()
   }
 }
 
@@ -22,6 +25,7 @@ pub struct Position {
 }
 
 impl Position {
+  #[must_use]
   pub fn next(&self, direction: Direction) -> (Self, Direction) {
     let (x_diff, y_diff) = match direction {
       Direction::Up => (0, 1),
@@ -49,6 +53,7 @@ impl Position {
     (next_position, next_direction)
   }
 
+  #[must_use]
   pub fn neighbours(&self) -> Vec<Self> {
     (-1..=1)
       .flat_map(|x| (-1..=1).map(move |y| (x, y)))
@@ -129,7 +134,7 @@ mod tests {
         Position { x: 1, y: 0 },
         Position { x: 1, y: 1 },
       ]
-    )
+    );
   }
 
   #[rstest]

@@ -40,6 +40,7 @@ impl FromStr for Gift {
 }
 
 impl Gift {
+  #[must_use]
   pub fn wrapping_paper_area(&self) -> u32 {
     let face_areas = self
       .dimensions
@@ -51,6 +52,7 @@ impl Gift {
     2 * face_areas.iter().sum::<u32>() + face_areas.iter().min().unwrap()
   }
 
+  #[must_use]
   pub fn ribbon_length(&self) -> u32 {
     let face_perimeters = self
       .dimensions
