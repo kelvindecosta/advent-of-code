@@ -1,4 +1,4 @@
-use std::{collections::HashSet, str::FromStr};
+use std::{collections::HashSet, mem::transmute, str::FromStr};
 
 use eyre::{bail, Result};
 
@@ -29,6 +29,7 @@ impl FromStr for Movement {
   }
 }
 
+#[repr(i32)]
 #[derive(Clone, Copy, Default)]
 pub enum Direction {
   #[default]
@@ -40,13 +41,7 @@ pub enum Direction {
 
 impl Direction {
   pub fn make_turn(self, turn: Turn) -> Self {
-    match (self as i32 + turn as i32 + 4) % 4 {
-      0 => Direction::North,
-      1 => Direction::East,
-      2 => Direction::South,
-      3 => Direction::West,
-      _ => unreachable!(),
-    }
+    unsafe { transmute((self as i32 + turn as i32 + 4) % 4) }
   }
 }
 
