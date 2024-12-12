@@ -1,28 +1,37 @@
-[workspace]
-members = ["events/*"]
-resolver = "2"
-
-[workspace.package]
+[package]
+name = "aoc"
+version = "0.1.0"
 edition = "2021"
 
-[workspace.dependencies]
-aho-corasick = "1.1.3"
-aoc = { git = "https://github.com/evenfurther/aoc" }
-aoc-build = { git = "https://github.com/evenfurther/aoc" }
-eyre = "0.6.8"
-fancy-regex = "0.14.0"
+[dependencies]
+clap = { version = "4.5.23", features = ["derive"] }
 itertools = "0.13.0"
 lazy_static = "1.5.0"
-ndarray = "0.16.1"
-num-derive = "0.4.2"
-num-traits = "0.2.19"
+prettytable-rs = "^0.10"
+serde = { version = "1.0.215", features = ["derive"] }
+serde_json = "1.0.133"
+
+[dev-dependencies]
+criterion = "0.5.1"
 rstest = "0.23.0"
 
-[workspace.lints.rust]
+[[bench]]
+name = "benchmark"
+harness = false
+
+[lints.rust]
 unsafe_code = "warn"
 
-[workspace.lints.clippy]
+[lints.clippy]
+# Groups
 pedantic = { level = "warn", priority = -1 }
 nursery = { level = "warn", priority = -1 }
-print_stdout = "deny"
+# Rules
+dbg_macro = "warn"
+missing_errors_doc = "allow"
 missing_panics_doc = "allow"
+must_use_candidate = "allow"
+print_stdout = "deny"
+
+[package.metadata.cargo-machete]
+ignored = ["prettytable-rs"]

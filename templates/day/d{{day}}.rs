@@ -1,24 +1,16 @@
-use std::str::FromStr;
+//! # {{title}}
+//!
+//! Use this docstring to explain the problem and how it is solved.
 
-use eyre::{bail, Result};
-
-pub struct Thing {}
-
-impl FromStr for Thing {
-  type Err = eyre::Error;
-
-  fn from_str(line: &str) -> Result<Self> {
-    unimplemented!()
-  }
-}
-
-#[aoc(day{{day}}, part1)]
-fn p1(input: &[Thing]) -> Result<String> {
+pub fn parse(input: &str) -> Input {
   unimplemented!()
 }
 
-#[aoc(day{{day}}, part2)]
-fn p2(input: &[Thing]) -> Result<String> {
+pub fn p1(input: &Input) -> OutputP1 {
+  unimplemented!()
+}
+
+pub fn p2(input: &Input) -> OutputP2 {
   unimplemented!()
 }
 
@@ -29,34 +21,12 @@ mod tests {
   use super::*;
 
   #[rstest]
-  // #[case("", Ok(""))]
-  fn test_p1_examples(#[case] input: &str, #[case] expected: Result<String>) {
-    assert_eq!(
-      p1(
-        input
-          .lines()
-          .map(|line| line.parse().unwrap())
-          .collect::<Vec<_>>()
-          .as_slice()
-      ),
-      expected,
-      "input: {input}"
-    );
+  fn test_p1(#[case] input: &str, #[case] expected: OutputP1) {
+    assert_eq!(p1(&parse(input)), expected, "input: {input}");
   }
 
   #[rstest]
-  // #[case("", Ok(""))]
-  fn test_p2_examples(#[case] input: &str, #[case] expected: Result<String>) {
-    assert_eq!(
-      p2(
-        input
-          .lines()
-          .map(|line| line.parse().unwrap())
-          .collect::<Vec<_>>()
-          .as_slice()
-      ),
-      expected,
-      "input: {input}"
-    );
+  fn test_p2(#[case] input: &str, #[case] expected: OutputP2) {
+    assert_eq!(p2(&parse(input)), expected, "input: {input}");
   }
 }

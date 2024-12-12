@@ -1,8 +1,0 @@
-# Advent of Code [2024](https://adventofcode.com/2024)
-
-| Day                | Challenge                                                 |
-| ------------------ | --------------------------------------------------------- |
-| [01](./src/d01.rs) | [Historian Hysteria](https://adventofcode.com/2024/day/1) |
-| [02](./src/d02.rs) | [Red-Nosed Reports](https://adventofcode.com/2024/day/2)  |
-| [03](./src/d03.rs) | [Mull It Over](https://adventofcode.com/2024/day/3)       |
-| [04](./src/d04.rs) | [Ceres Search](https://adventofcode.com/2024/day/4)       |

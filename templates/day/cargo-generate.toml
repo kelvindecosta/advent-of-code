@@ -1,3 +1,4 @@
 [placeholders]
 year = { prompt = "What year is this for?", type = "string" }
 day = { prompt = "What day is this for?", type = "string" }
+title = { prompt = "What is the title of this day's puzzle?", type = "string" }

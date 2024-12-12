@@ -15,3 +15,4 @@ use_field_init_shorthand = true
 wrap_comments = true
 tab_spaces = 2
 hard_tabs = false
+trailing_comma = "Vertical"
