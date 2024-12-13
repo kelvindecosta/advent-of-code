@@ -2,4 +2,4 @@
 
 |      Day       | Challenge                                                  | Benchmark (µs) |
 | :------------: | :--------------------------------------------------------- | -------------: |
-| [01](./d01.rs) | [Chronal Calibration](https://adventofcode.com/2018/day/1) |   (incomplete) |
+| [01](./d01.rs) | [Chronal Calibration](https://adventofcode.com/2018/day/1) |        3053.91 |

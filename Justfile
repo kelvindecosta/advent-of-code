@@ -39,6 +39,8 @@ make-puzzle year day:
 # 📊 Measure the performance of the solutions
 @bench *FLAGS:
   cargo bench --bench benchmark {{FLAGS}}
+  ./scripts/update-documentation-with-benchmarks.rs > /dev/null
+  just format
 
 # 🧹 Lint the codebase
 @lint *FLAGS:

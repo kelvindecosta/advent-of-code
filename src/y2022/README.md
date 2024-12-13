@@ -2,4 +2,4 @@
 
 |      Day       | Challenge                                               | Benchmark (µs) |
 | :------------: | :------------------------------------------------------ | -------------: |
-| [01](./d01.rs) | [Calorie Counting](https://adventofcode.com/2022/day/1) |   (incomplete) |
+| [01](./d01.rs) | [Calorie Counting](https://adventofcode.com/2022/day/1) |           9.61 |

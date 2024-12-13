@@ -2,4 +2,4 @@
 
 |      Day       | Challenge                                          | Benchmark (µs) |
 | :------------: | :------------------------------------------------- | -------------: |
-| [01](./d01.rs) | [Sonar Sweep](https://adventofcode.com/2021/day/1) |   (incomplete) |
+| [01](./d01.rs) | [Sonar Sweep](https://adventofcode.com/2021/day/1) |           5.60 |

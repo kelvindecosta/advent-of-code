@@ -1,4 +1,5 @@
 #![feature(iter_array_chunks)]
+#![feature(let_chains)]
 
 pub mod scripts;
 pub mod util;

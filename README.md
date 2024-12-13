@@ -43,16 +43,16 @@ Available recipes:
 
 |                 Year | Benchmark (ms) |
 | -------------------: | -------------: |
-| [2015](./src/y2015/) |   (incomplete) |
-| [2016](./src/y2016/) |   (incomplete) |
-| [2017](./src/y2017/) |   (incomplete) |
-| [2018](./src/y2018/) |   (incomplete) |
-| [2019](./src/y2019/) |   (incomplete) |
-| [2020](./src/y2020/) |   (incomplete) |
-| [2021](./src/y2021/) |   (incomplete) |
-| [2022](./src/y2022/) |   (incomplete) |
-| [2023](./src/y2023/) |   (incomplete) |
-| [2024](./src/y2024/) |   (incomplete) |
+| [2015](./src/y2015/) |              - |
+| [2016](./src/y2016/) |              - |
+| [2017](./src/y2017/) |              - |
+| [2018](./src/y2018/) |              - |
+| [2019](./src/y2019/) |              - |
+| [2020](./src/y2020/) |              - |
+| [2021](./src/y2021/) |              - |
+| [2022](./src/y2022/) |              - |
+| [2023](./src/y2023/) |              - |
+| [2024](./src/y2024/) |              - |
 
 ## Credits
 

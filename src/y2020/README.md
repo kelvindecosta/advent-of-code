@@ -2,4 +2,4 @@
 
 |      Day       | Challenge                                            | Benchmark (µs) |
 | :------------: | :--------------------------------------------------- | -------------: |
-| [01](./d01.rs) | [Report Repair](https://adventofcode.com/2020/day/1) |   (incomplete) |
+| [01](./d01.rs) | [Report Repair](https://adventofcode.com/2020/day/1) |          14.76 |
