@@ -6,7 +6,22 @@ use std::{
   path::Path,
 };
 
+use num_format::{Locale, ToFormattedString};
+
 use crate::util::parse::ParseOps;
+
+#[allow(clippy::cast_possible_truncation)]
+#[allow(clippy::cast_sign_loss)]
+fn format_duration(duration: f64) -> String {
+  let integer = duration.trunc() as u64;
+  let fractional = duration.fract();
+
+  format!(
+    "{}.{}",
+    integer.to_formatted_string(&Locale::en),
+    (fractional * 100.0).round() as u8
+  )
+}
 
 /// Adds/updates an entry for the given year to the README, in the solutions
 /// table. If a benchmark duration is provided, it is added to the entry.
@@ -22,7 +37,7 @@ pub fn update_year_entry_in_readme(
   let benchmark = if let Some(duration) = duration_milliseconds
     && is_complete
   {
-    format!("{duration:.2} |")
+    format!("{} |", format_duration(duration))
   } else {
     "- |".to_string()
   };
@@ -33,7 +48,10 @@ pub fn update_year_entry_in_readme(
   if readme_content.contains(&year_entry_index) {
     for line in readme_content.lines() {
       if line.starts_with(&year_entry_index) {
-        modified_readme_content.push(year_entry.clone());
+        let mut columns = line.split('|').collect::<Vec<_>>();
+        let benchmark = benchmark.as_str().replace('|', "");
+        columns[2] = &benchmark;
+        modified_readme_content.push(columns.join("|").to_string());
       } else {
         modified_readme_content.push(line.to_string());
       }
@@ -93,7 +111,7 @@ pub fn update_day_entry_in_year_readme(
   let benchmark = if let Some(duration) = duration_microseconds
     && is_complete
   {
-    format!("{duration:.2} |")
+    format!("{} |", format_duration(duration))
   } else {
     "- |".to_string()
   };
@@ -103,8 +121,10 @@ pub fn update_day_entry_in_year_readme(
   if readme_content.contains(&day_entry_index) {
     for line in readme_content.lines() {
       if line.starts_with(&day_entry_index) {
-        modified_readme_content
-          .push(line.replace("- |", &benchmark).to_string());
+        let mut columns = line.split('|').collect::<Vec<_>>();
+        let benchmark = benchmark.as_str().replace('|', "");
+        columns[3] = &benchmark;
+        modified_readme_content.push(columns.join("|").to_string());
       } else {
         modified_readme_content.push(line.to_string());
       }
