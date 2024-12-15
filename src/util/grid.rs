@@ -30,6 +30,7 @@
 //! [`Point`]: crate::util::point
 //! [`parse`]: Grid::parse
 //! [`default_copy`]: Grid::default_copy
+
 use std::ops::{Index, IndexMut};
 
 use crate::util::point::Point;

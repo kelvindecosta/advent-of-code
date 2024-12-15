@@ -3,6 +3,7 @@
 //!
 //! > This module is originally sourced from [here](https://github.com/maneatingape/advent-of-code-rust/blob/main/src/util/integer.rs)
 //! > and is under the MIT license.
+
 use std::ops::{Add, BitAnd, BitOr, BitXor, Div, Mul, Neg, Rem, Shl, Shr, Sub};
 
 pub trait Integer<T>:

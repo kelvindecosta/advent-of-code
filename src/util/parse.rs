@@ -18,6 +18,7 @@
 //!
 //! > This module is originally sourced from [here](https://github.com/maneatingape/advent-of-code-rust/blob/main/src/util/parse.rs)
 //! > and is under the MIT license.
+
 use std::{marker::PhantomData, str::Bytes};
 
 use crate::util::integer::{Signed, Unsigned};

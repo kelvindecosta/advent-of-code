@@ -1,4 +1,4 @@
-#!/usr/bin/env cargo -Zscript
+#!/usr/bin/env cargo -Zscript --quiet
 ---
 [package]
 edition="2021"

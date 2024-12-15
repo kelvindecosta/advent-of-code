@@ -29,6 +29,7 @@
 //! [`counter_clockwise`]: Point::counter_clockwise
 //! [`manhattan`]: Point::manhattan
 //! [`Grid`]: crate::util::grid
+
 use std::{
   hash::{Hash, Hasher},
   ops::{Add, AddAssign, Mul, Sub, SubAssign},
