@@ -1,5 +1,6 @@
 #![allow(clippy::print_stdout)]
 use std::{
+  cmp::Ordering,
   fs::read_to_string,
   path::{Path, PathBuf},
 };
@@ -71,12 +72,27 @@ macro_rules! solver {
 
 include!(concat!(env!("OUT_DIR"), "/solvers.rs"));
 
-#[derive(Serialize)]
+#[derive(Serialize, PartialEq, Eq)]
 struct Solution {
   year: u32,
   day: u32,
   part1: String,
   part2: String,
+}
+
+impl PartialOrd for Solution {
+  fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+    Some(self.cmp(other))
+  }
+}
+
+impl Ord for Solution {
+  fn cmp(&self, other: &Self) -> Ordering {
+    self
+      .year
+      .cmp(&other.year)
+      .then_with(|| self.day.cmp(&other.day))
+  }
 }
 
 fn main() {
@@ -106,6 +122,8 @@ fn main() {
       part2,
     });
   }
+
+  solutions.sort();
 
   match format {
     OutputFormat::Table => {
