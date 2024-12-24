@@ -7,6 +7,8 @@
 
 use std::collections::HashMap;
 
+use crate::util::parse::ParseOps;
+
 type Input = HashMap<usize, [u32; 60]>;
 
 pub fn parse(input: &str) -> Input {
@@ -21,11 +23,11 @@ pub fn parse(input: &str) -> Input {
     match record.len() {
       // Guard falls asleep
       31 => {
-        sleep_start = Some(record[15..17].parse::<usize>().unwrap());
+        sleep_start = Some((&record[15..17]).unsigned::<usize>());
       }
       // Guard wakes up
       27 => {
-        let sleep_end = record[15..17].parse::<usize>().unwrap();
+        let sleep_end = (&record[15..17]).unsigned();
 
         let guard_sleep_tracker = guards
           .entry(current_guard.unwrap())
@@ -35,8 +37,7 @@ pub fn parse(input: &str) -> Input {
       }
       // Guard begins shift
       _ => {
-        current_guard =
-          Some(record[26..record.len() - 13].parse::<usize>().unwrap());
+        current_guard = Some((&record[26..record.len() - 13]).unsigned());
       }
     }
   }

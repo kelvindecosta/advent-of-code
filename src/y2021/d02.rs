@@ -4,7 +4,7 @@
 //! Given each `Command`, we simply update the position according to the
 //! instructions.
 
-use crate::util::point::Point;
+use crate::util::{parse::ParseOps, point::Point};
 
 #[derive(Clone, Copy)]
 pub enum Command {
@@ -19,7 +19,7 @@ pub fn parse(input: &str) -> Vec<Command> {
     .split_ascii_whitespace()
     .array_chunks::<2>()
     .map(|[command, value]| {
-      let value = value.parse::<i32>().unwrap();
+      let value = value.signed();
       match command {
         "forward" => Command::Forward(value),
         "down" => Command::Down(value),
