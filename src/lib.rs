@@ -1,4 +1,5 @@
 #![feature(array_chunks)]
+#![feature(cmp_minmax)]
 #![feature(iter_array_chunks)]
 #![feature(let_chains)]
 
