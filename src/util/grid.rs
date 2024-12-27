@@ -20,8 +20,8 @@
 //!
 //! A convenience [`parse`] method creates a `Grid` directly from a 2
 //! dimenionsal set of ASCII characters, a common occurence in Advent of Code
-//! inputs. The [`default_copy`] function creates a grid of the same size, that
-//! can be used for in BFS algorithms for tracking visited location or for
+//! inputs. The [`same_size_with`] function creates a grid of the same size,
+//! that can be used for in BFS algorithms for tracking visited location or for
 //! tracking cost in Djikstra.
 //!
 //! > This module is originally sourced from [here](https://github.com/maneatingape/advent-of-code-rust/blob/main/src/util/point.rs)
@@ -29,7 +29,7 @@
 //!
 //! [`Point`]: crate::util::point
 //! [`parse`]: Grid::parse
-//! [`default_copy`]: Grid::default_copy
+//! [`same_size_with`]: Grid::same_size_with
 
 use std::ops::{Index, IndexMut};
 
@@ -43,6 +43,7 @@ pub struct Grid<T> {
 }
 
 impl Grid<u8> {
+  #[inline]
   #[allow(clippy::cast_possible_truncation)]
   #[allow(clippy::cast_possible_wrap)]
   #[allow(clippy::cast_sign_loss)]
@@ -61,6 +62,7 @@ impl Grid<u8> {
 }
 
 impl<T: Copy + PartialEq> Grid<T> {
+  #[inline]
   #[allow(clippy::cast_possible_truncation)]
   #[allow(clippy::cast_possible_wrap)]
   pub fn find(&self, needle: T) -> Option<Point> {
@@ -85,12 +87,13 @@ impl<T: Copy> Grid<T> {
 }
 
 impl<T> Grid<T> {
+  #[inline]
   #[allow(clippy::cast_sign_loss)]
-  pub fn default_copy<U: Default + Copy>(&self) -> Grid<U> {
+  pub fn same_size_with<U: Copy>(&self, value: U) -> Grid<U> {
     Grid {
       width: self.width,
       height: self.height,
-      bytes: vec![U::default(); (self.width * self.height) as usize],
+      bytes: vec![value; (self.width * self.height) as usize],
     }
   }
 

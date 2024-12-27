@@ -41,17 +41,6 @@ pub const DOWN: Point = Point::new(0, 1);
 pub const LEFT: Point = Point::new(-1, 0);
 pub const RIGHT: Point = Point::new(1, 0);
 pub const ORTHOGONAL: [Point; 4] = [UP, DOWN, LEFT, RIGHT];
-// Left to right and top to bottom.
-pub const DIAGONAL: [Point; 8] = [
-  Point::new(-1, -1),
-  UP,
-  Point::new(1, -1),
-  LEFT,
-  RIGHT,
-  Point::new(-1, 1),
-  DOWN,
-  Point::new(1, 1),
-];
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub struct Point {
@@ -94,14 +83,14 @@ impl Point {
   #[must_use]
   pub fn neighbours(self) -> [Self; 8] {
     [
-      self + UP,
       self + UP + LEFT,
+      self + UP,
+      self + UP + RIGHT,
       self + LEFT,
-      self + LEFT + DOWN,
+      self + RIGHT,
+      self + DOWN + LEFT,
       self + DOWN,
       self + DOWN + RIGHT,
-      self + RIGHT,
-      self + RIGHT + UP,
     ]
   }
 }
