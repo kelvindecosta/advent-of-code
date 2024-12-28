@@ -21,7 +21,7 @@
 
 use std::{marker::PhantomData, str::Bytes};
 
-use crate::util::integer::{Signed, Unsigned};
+use super::integer::{Signed, Unsigned};
 
 pub trait ParseByte {
   fn to_decimal(self) -> u8;

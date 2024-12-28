@@ -24,7 +24,7 @@
 //! that can be used for in BFS algorithms for tracking visited location or for
 //! tracking cost in Djikstra.
 //!
-//! > This module is originally sourced from [here](https://github.com/maneatingape/advent-of-code-rust/blob/main/src/util/point.rs)
+//! > This module is originally sourced from [here](https://github.com/maneatingape/advent-of-code-rust/blob/main/src/util/grid.rs)
 //! > and is under the MIT license.
 //!
 //! [`Point`]: crate::util::point
@@ -33,7 +33,7 @@
 
 use std::ops::{Index, IndexMut};
 
-use crate::util::point::Point;
+use super::point::Point;
 
 #[derive(Clone, PartialEq, Eq, Hash)]
 pub struct Grid<T> {
