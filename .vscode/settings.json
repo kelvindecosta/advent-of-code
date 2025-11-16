@@ -1,4 +1,7 @@
 {
   "editor.tabSize": 2,
-  "rust-analyzer.checkOnSave.command": "clippy"
+  "rust-analyzer.checkOnSave.command": "clippy",
+  "github.copilot.enable": {
+    "*": false
+  }
 }
