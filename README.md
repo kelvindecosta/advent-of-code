@@ -12,7 +12,7 @@ Besides having the nightly channel of the Rust toolchain installed, you will nee
 
 > [!TIP]
 > To use this repository as a template for your own solutions, simply delete the sub-directories in the `src/` directory that match the `y{year}` pattern and remove the modules from the `lib.rs` file.
-> You may then run the `just make-event <year>` and `just make-puzzle <year> <day>` commands to scaffold the boilerplate code for the event and puzzles of a specific year.
+> You may then run the `just scaffold <year>` and `just scaffold <year> <day>` commands to scaffold the boilerplate code for the event and puzzles of a specific year.
 
 ### Authentication
 
