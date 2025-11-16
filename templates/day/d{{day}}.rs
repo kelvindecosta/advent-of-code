@@ -21,11 +21,13 @@ mod tests {
   use super::*;
 
   #[rstest]
+  #[case("example", 0)]
   fn test_p1(#[case] input: &str, #[case] expected: OutputP1) {
     assert_eq!(p1(&parse(input)), expected, "input: {input}");
   }
 
   #[rstest]
+  #[case("example", 0)]
   fn test_p2(#[case] input: &str, #[case] expected: OutputP2) {
     assert_eq!(p2(&parse(input)), expected, "input: {input}");
   }
