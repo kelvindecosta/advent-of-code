@@ -1,7 +1,5 @@
 //! # Giant Squid
 //!
-//! Use this docstring to explain the problem and how it is solved.
-//!
 //! For each board we determine the turn on which it would win, by finding the
 //! earliest turn a row or column is fully marked. The score is then calculated
 //! based on the unmarked numbers at that turn.
