@@ -26,17 +26,15 @@ just
 
 ```
 Available recipes:
-    bench *FLAGS         # 📊 Measure the performance of the solutions
-    debug *FLAGS         # 🐞 Run the solutions with diagnostic messages
+    bench year="" day="" part=""   # 📊 Measure the performance of the solutions
+    debug year="" day="" format="" # 🐞 Run the solutions with diagnostic messages
     default
-    download year day    # 📥 Download input for a specific day's puzzle
-    format               # 👔 Format the codebase
-    lint *FLAGS          # 🧹 Lint the codebase
-    make-event year      # 🏗️ Scaffold boilerplate for a new year's event
-    make-puzzle year day # 📅 Scaffold boilerplate for a new day's puzzle
-    solve *FLAGS         # 🧩 Execute the solutions and obtain answers in a formatted output
-    submit year day part # 📤 Send the answer for one part of a specific day's puzzle
-    test *FLAGS          # 🧪 Check if the solutions pass the base examples
+    format                         # 👔 Format the codebase
+    lint *FLAGS                    # 🧹 Lint the codebase
+    scaffold year day=""           # 🏗️ Scaffold boilerplate for a new year or day's puzzle
+    solve year="" day="" format="" # 🧩 Execute the solutions and obtain answers in a formatted output
+    submit year day part           # 📤 Send the answer for one part of a specific day's puzzle
+    test year="" day=""            # 🧪 Check if the solutions pass the base examples
 ```
 
 ## Solutions
