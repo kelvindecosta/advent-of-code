@@ -6,3 +6,4 @@
 | [02](./d02.rs) | [I Was Told There Would Be No Math](https://adventofcode.com/2015/day/2)      |           5.70 |
 | [03](./d03.rs) | [Perfectly Spherical Houses in a Vacuum](https://adventofcode.com/2015/day/3) |         392.79 |
 | [04](./d04.rs) | [The Ideal Stocking Stuffer](https://adventofcode.com/2015/day/4)             |      87,959.67 |
+| [05](./d05.rs) | [Doesn't He Have Intern-Elves For This?](https://adventofcode.com/2015/day/5) |          76.39 |
