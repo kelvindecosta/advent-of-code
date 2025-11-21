@@ -5,14 +5,12 @@
 //!
 //! [`2015/04`]: crate::y2015::d04
 
-use std::sync::{
-  atomic::{AtomicBool, AtomicU32, Ordering},
-  Mutex,
+use std::sync::Mutex;
+
+use crate::util::{
+  md5::hash,
+  thread::{spawn, AtomicIter},
 };
-
-use md5::{Digest, Md5};
-
-use crate::util::thread::spawn;
 
 pub struct PasswordSeed {
   instructions: Vec<(u32, u32)>,
@@ -21,16 +19,8 @@ pub struct PasswordSeed {
 
 pub struct State {
   secret: String,
-  counter: AtomicU32,
+  counter: AtomicIter,
   password_seed: Mutex<PasswordSeed>,
-  done: AtomicBool,
-}
-
-/// Calculate the MD5 hash of the buffer.
-fn hash(buffer: &[u8], size: usize) -> [u8; 16] {
-  let mut hasher = Md5::new();
-  hasher.update(&buffer[..size]);
-  hasher.finalize().as_slice().try_into().unwrap()
 }
 
 /// Concatenate the secret and the number, and return the result as a buffer.
@@ -48,7 +38,7 @@ fn build_hash_input(secret: &str, n: u32) -> ([u8; 64], usize) {
 fn check_hash(buffer: &[u8], size: usize, n: u32, state: &State) {
   let digest = hash(buffer, size);
 
-  // Since we only check for the first 5-6 leading zeros, we can use the
+  // Since we only check for the first 5 leading zeros, we can use the
   // just the first 4 bytes of the digest.
   let target = u32::from_be_bytes(*digest.first_chunk::<4>().unwrap());
 
@@ -60,7 +50,7 @@ fn check_hash(buffer: &[u8], size: usize, n: u32, state: &State) {
     password_seed.mask |= 1 << (target >> 8);
 
     if password_seed.mask & 0xff == 0xff {
-      state.done.store(true, Ordering::Relaxed);
+      state.counter.stop();
     }
   }
 }
@@ -68,8 +58,7 @@ fn check_hash(buffer: &[u8], size: usize, n: u32, state: &State) {
 /// Checks the hash produced by combining the secret with 1000 numbers.
 #[allow(clippy::cast_possible_truncation)]
 fn worker(state: &State) {
-  while !state.done.load(Ordering::Relaxed) {
-    let offset = state.counter.fetch_add(1000, Ordering::Relaxed);
+  while let Some(offset) = state.counter.next() {
     let (mut buffer, size) = build_hash_input(&state.secret, offset);
 
     for n in 0..1000 {
@@ -86,12 +75,11 @@ fn worker(state: &State) {
 pub fn parse(input: &str) -> Vec<u32> {
   let state = State {
     secret: input.trim().to_owned(),
-    counter: AtomicU32::new(1000),
+    counter: AtomicIter::new(1000, 1000),
     password_seed: Mutex::new(PasswordSeed {
       instructions: vec![],
       mask: 0,
     }),
-    done: AtomicBool::new(false),
   };
 
   // Check the first 1000 hashes sequentially.

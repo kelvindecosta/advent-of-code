@@ -6,48 +6,209 @@
 //!
 //! > This module is originally sourced from [here](https://github.com/maneatingape/advent-of-code-rust/blob/main/src/util/thread.rs)
 //! > and is under the MIT license.
+use std::{
+  sync::atomic::{AtomicBool, AtomicU32, AtomicUsize, Ordering::Relaxed},
+  thread::{available_parallelism, scope, ScopedJoinHandle},
+};
 
-use std::thread::{available_parallelism, scope};
+/// Usually the number of physical cores.
+pub fn threads() -> usize {
+  available_parallelism().unwrap().get()
+}
 
 /// Spawn `n` scoped threads, where `n` is the available parallelism.
-pub fn spawn<F, T>(f: F)
+pub fn spawn<F, R>(f: F) -> Vec<R>
 where
-  F: FnOnce() -> T + Copy + Send,
-  T: Send,
+  F: Fn() -> R + Copy + Send,
+  R: Send,
 {
   scope(|scope| {
+    let mut handles = Vec::new();
+
     for _ in 0..threads() {
-      scope.spawn(f);
+      let handle = scope.spawn(f);
+      handles.push(handle);
     }
-  });
+
+    handles
+      .into_iter()
+      .flat_map(ScopedJoinHandle::join)
+      .collect()
+  })
 }
 
-/// Splits `items` into batches, one per thread. Items are assigned in a round
-/// robin fashion, to achieve a crude load balancing in case some items are more
-/// complex to process than others.
-pub fn spawn_batches<F, T, U>(mut items: Vec<U>, f: F)
+// Spawns `n` scoped threads that each receive a
+// [work stealing](https://en.wikipedia.org/wiki/Work_stealing) iterator.
+// Work stealing is an efficient strategy that keeps each CPU core busy when
+// some items take longer than others to process, used by popular libraries such as [rayon](https://github.com/rayon-rs/rayon).
+// Processing at different rates also happens on many modern CPUs with
+// [heterogeneous performance and efficiency cores](https://en.wikipedia.org/wiki/ARM_big.LITTLE).
+pub fn spawn_parallel_iterator<F, R, T>(items: &[T], f: F) -> Vec<R>
 where
-  F: FnOnce(Vec<U>) -> T + Copy + Send,
-  T: Send,
-  U: Send,
+  F: Fn(ParIter<'_, T>) -> R + Copy + Send,
+  R: Send,
+  T: Sync,
 {
   let threads = threads();
-  let mut batches: Vec<_> = (0..threads).map(|_| Vec::new()).collect();
-  let mut index = 0;
+  let size = items.len().div_ceil(threads);
 
-  // Round robin items over each thread.
-  while let Some(next) = items.pop() {
-    batches[index % threads].push(next);
-    index += 1;
-  }
+  // Initially divide work as evenly as possible among each worker thread.
+  let workers: Vec<_> = (0..threads)
+    .map(|id| {
+      let start = (id * size).min(items.len());
+      let end = (start + size).min(items.len());
+      CachePadding::new(pack(start, end))
+    })
+    .collect();
+  let workers = workers.as_slice();
 
   scope(|scope| {
-    for batch in batches {
-      scope.spawn(move || f(batch));
+    let mut handles = Vec::new();
+
+    for id in 0..threads {
+      let handle = scope.spawn(move || f(ParIter { id, items, workers }));
+      handles.push(handle);
     }
-  });
+
+    handles
+      .into_iter()
+      .flat_map(ScopedJoinHandle::join)
+      .collect()
+  })
 }
 
-fn threads() -> usize {
-  available_parallelism().unwrap().get()
+pub struct ParIter<'a, T> {
+  id: usize,
+  items: &'a [T],
+  workers: &'a [CachePadding],
+}
+
+impl<'a, T> Iterator for ParIter<'a, T> {
+  type Item = &'a T;
+
+  fn next(&mut self) -> Option<&'a T> {
+    // First try taking from our own queue.
+    let worker = &self.workers[self.id];
+    let current = worker.increment();
+    let (start, end) = unpack(current);
+
+    // There's still items to process.
+    if start < end {
+      return Some(&self.items[start]);
+    }
+
+    // Steal from another worker, [spinlocking](https://en.wikipedia.org/wiki/Spinlock)
+    // until we acquire new items to process or there's nothing left to do.
+    loop {
+      // Find worker with the most remaining items, breaking out of the loop
+      // and returning `None` if there is no work remaining.
+      let (other, current, size) = self
+        .workers
+        .iter()
+        .filter_map(|other| {
+          let current = other.load();
+          let (start, end) = unpack(current);
+          let size = end.saturating_sub(start);
+
+          (size > 0).then_some((other, current, size))
+        })
+        .max_by_key(|&(_, _, size)| size)?;
+
+      // Split the work items into two roughly equal piles.
+      let (start, end) = unpack(current);
+      let middle = start + size.div_ceil(2);
+
+      let next = pack(middle, end);
+      let stolen = pack(start + 1, middle);
+
+      // We could be preempted by another thread stealing or by the owning
+      // worker thread finishing an item, so check indices are still
+      // unmodified.
+      if other.compare_exchange(current, next) {
+        worker.store(stolen);
+        break Some(&self.items[start]);
+      }
+    }
+  }
+}
+
+// Intentionally force alignment to 128 bytes to make a best effort attempt to
+// place each atomic on its own cache line. This reduces contention and
+// improves performance for common CPU caching protocols such as [MESI](https://en.wikipedia.org/wiki/MESI_protocol).
+#[repr(align(128))]
+pub struct CachePadding {
+  atomic: AtomicUsize,
+}
+
+/// Convenience wrapper methods around atomic operations. Both start and end
+/// indices are packed into a single atomic so that we can use the fastest and
+/// easiest to reason about `Relaxed` ordering.
+impl CachePadding {
+  #[inline]
+  const fn new(n: usize) -> Self {
+    Self {
+      atomic: AtomicUsize::new(n),
+    }
+  }
+
+  #[inline]
+  fn increment(&self) -> usize {
+    self.atomic.fetch_add(1, Relaxed)
+  }
+
+  #[inline]
+  fn load(&self) -> usize {
+    self.atomic.load(Relaxed)
+  }
+
+  #[inline]
+  fn store(&self, n: usize) {
+    self.atomic.store(n, Relaxed);
+  }
+
+  #[inline]
+  fn compare_exchange(&self, current: usize, new: usize) -> bool {
+    self
+      .atomic
+      .compare_exchange(current, new, Relaxed, Relaxed)
+      .is_ok()
+  }
+}
+
+#[inline]
+const fn pack(start: usize, end: usize) -> usize {
+  (end << 32) | start
+}
+
+#[inline]
+const fn unpack(both: usize) -> (usize, usize) {
+  (both & 0xffff_ffff, both >> 32)
+}
+
+/// Shares monotonically increasing value between multiple threads.
+pub struct AtomicIter {
+  running: AtomicBool,
+  index: AtomicU32,
+  step: u32,
+}
+
+impl AtomicIter {
+  pub fn new(start: u32, step: u32) -> Self {
+    Self {
+      running: AtomicBool::new(true),
+      index: AtomicU32::from(start),
+      step,
+    }
+  }
+
+  pub fn next(&self) -> Option<u32> {
+    self
+      .running
+      .load(Relaxed)
+      .then(|| self.index.fetch_add(self.step, Relaxed))
+  }
+
+  pub fn stop(&self) {
+    self.running.store(false, Relaxed);
+  }
 }
