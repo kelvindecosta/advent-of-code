@@ -19,7 +19,7 @@
 //! check if the stored value in the map is larger than the current position by
 //! 1, indicating that we've found non-overlapping pairs.
 //!
-//! > This solution was heavily inspired by [`maneatingape`'s solution](https://github.com/maneatingape/advent-of-code-rust/blob/main/src/year2023/day03.rs).
+//! > This solution was heavily inspired by [`maneatingape`'s solution](https://github.com/maneatingape/advent-of-code-rust/blob/main/src/year2015/day05.rs).
 //! > Having previously implemented a solution for this problem using regular
 //! > expressions, I was curious as to how one could go about solving it without
 //! > them.
