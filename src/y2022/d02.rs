@@ -23,7 +23,7 @@ impl Shape {
       b'A' | b'X' => Rock,
       b'B' | b'Y' => Paper,
       b'C' | b'Z' => Scissors,
-      _ => unreachable!(),
+      _ => unreachable!("Not a valid play"),
     }
   }
 
@@ -110,7 +110,7 @@ pub fn p2(input: &[Strategy]) -> u32 {
           b'X' => Less,
           b'Y' => Equal,
           b'Z' => Greater,
-          _ => unreachable!(),
+          _ => unreachable!("Not a valid scenario"),
         },
       );
       Round { theirs, mine }.score()

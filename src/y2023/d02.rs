@@ -26,7 +26,7 @@ pub fn parse(input: &str) -> Vec<Game> {
             b'r' => game.red = game.red.max(amount),
             b'g' => game.green = game.green.max(amount),
             b'b' => game.blue = game.blue.max(amount),
-            _ => unreachable!(),
+            _ => unreachable!("Not a valid color"),
           };
           game
         })

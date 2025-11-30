@@ -88,7 +88,7 @@ pub fn parse(input: &str) -> Answers {
           .map(|(&x, segment)| (segment, Point::new(x, start.y)))
           .collect::<Vec<_>>()
       }
-      _ => unreachable!(),
+      _ => unreachable!("Not a valid direction"),
     };
 
     // Ignore intersections at the origin

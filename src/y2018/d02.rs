@@ -73,7 +73,7 @@ pub fn p2(input: &[&[u8]]) -> String {
     seen.clear();
   }
 
-  unreachable!();
+  unreachable!("Should have found duplicate already");
 }
 
 #[cfg(test)]

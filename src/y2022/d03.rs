@@ -31,14 +31,14 @@ pub fn common(groups: &[&[u8]]) -> u8 {
     });
   }
 
-  unreachable!()
+  unreachable!("Should have found the common letter")
 }
 
 pub fn item_priority(item: u8) -> u32 {
   u32::from(match item {
     b'a'..=b'z' => item - b'a' + 1,
     b'A'..=b'Z' => item - b'A' + 27,
-    _ => unreachable!(),
+    _ => unreachable!("Not a valid letter"),
   })
 }
 

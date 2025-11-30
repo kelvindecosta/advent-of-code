@@ -104,7 +104,7 @@ impl From<u8> for Point {
       b'v' | b'D' => DOWN,
       b'<' | b'L' => LEFT,
       b'>' | b'R' => RIGHT,
-      _ => unreachable!(),
+      _ => unreachable!("Not a valid point"),
     }
   }
 }

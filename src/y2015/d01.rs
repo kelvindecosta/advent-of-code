@@ -33,7 +33,7 @@ pub fn p2(input: &[i32]) -> usize {
     }
   }
 
-  unreachable!()
+  unreachable!("Should have reached basement already")
 }
 
 #[cfg(test)]

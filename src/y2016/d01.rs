@@ -21,7 +21,7 @@ impl Movement {
     match self.turn {
       'L' => direction.counter_clockwise(),
       'R' => direction.clockwise(),
-      _ => unreachable!(),
+      _ => unreachable!("Not a valid turn"),
     }
   }
 }

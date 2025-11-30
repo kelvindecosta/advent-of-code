@@ -24,7 +24,7 @@ pub fn parse(input: &str) -> Vec<Command> {
         "forward" => Command::Forward(value),
         "down" => Command::Down(value),
         "up" => Command::Up(value),
-        _ => unreachable!(),
+        _ => unreachable!("Not a valid command"),
       }
     })
     .collect()
