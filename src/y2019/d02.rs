@@ -6,7 +6,7 @@
 //! - all integers are positive
 //!
 //! we can deduce that the program is some linear function of the form
-//! `ax + by+ c`, where x and y are the noun and verb respectively.
+//! `ax + by + c`, where x and y are the noun and verb respectively.
 //!
 //! We first find the values of `a`, `b`, and `c` by evaluating the program at
 //! `(0, 0)`, `(1, 0)`, and `(0, 1)`. With this, we are able to calculate part 1
@@ -28,9 +28,9 @@ type Input = [i32; 3];
 
 pub fn evaluate_program(noun: i32, verb: i32, program: &[i32]) -> i32 {
   let mut computer = IntcodeComputer::new(program);
-  computer.memory[1] = noun;
-  computer.memory[2] = verb;
-  computer.execute()
+  computer.program[1] = noun;
+  computer.program[2] = verb;
+  computer.run()
 }
 
 pub fn parse(input: &str) -> Input {
