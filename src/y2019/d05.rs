@@ -1,6 +1,7 @@
 //! # Sunny with a Chance of Asteroids
 //!
-//! Use this docstring to explain the problem and how it is solved.
+//! We expand on the [`Intcode`] computer we developed on [`2019/02`] and check
+//! for the first non-zero output value before the program halts.
 
 use crate::{
   util::parse::ParseOps,
