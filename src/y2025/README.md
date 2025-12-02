@@ -2,4 +2,4 @@
 
 |      Day       | Challenge                                              | Benchmark (µs) |
 | :------------: | :----------------------------------------------------- | -------------: |
-| [01](./d01.rs) | [Secret Entrance](https://adventofcode.com/2025/day/1) |          35.50 |
+| [01](./d01.rs) | [Secret Entrance](https://adventofcode.com/2025/day/1) |          33.49 |

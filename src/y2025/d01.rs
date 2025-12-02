@@ -10,41 +10,37 @@
 
 use crate::util::parse::ParseOps;
 
-pub fn parse(input: &str) -> Vec<i32> {
+pub fn parse(input: &str) -> (i32, i32) {
   let direction = input.bytes().filter(|&b| b.is_ascii_uppercase());
   let amount = input.iter_signed::<i32>();
-  direction
+  let rotations = direction
     .zip(amount)
     .map(|(d, a)| if d == b'R' { a } else { -a })
-    .collect()
-}
+    .collect::<Vec<_>>();
 
-pub fn p1(input: &[i32]) -> i32 {
   let mut dial = 50;
-  let mut password = 0;
+  let mut password_v1 = 0;
+  let mut password_v2 = 0;
 
-  for &rotation in input {
-    dial += rotation;
-    password += i32::from(dial % 100 == 0);
-  }
-
-  password
-}
-
-pub fn p2(input: &[i32]) -> i32 {
-  let mut dial = 50;
-  let mut password = 0;
-
-  for &rotation in input {
+  for rotation in rotations {
     if rotation > 0 {
-      password += (dial + rotation) / 100;
+      password_v2 += (dial + rotation) / 100;
     } else {
-      password += ((100 - dial).rem_euclid(100) - rotation) / 100;
+      password_v2 += ((100 - dial).rem_euclid(100) - rotation) / 100;
     }
     dial = (dial + rotation).rem_euclid(100);
+    password_v1 += i32::from(dial == 0);
   }
 
-  password
+  (password_v1, password_v2)
+}
+
+pub const fn p1(input: &(i32, i32)) -> i32 {
+  input.0
+}
+
+pub const fn p2(input: &(i32, i32)) -> i32 {
+  input.1
 }
 
 #[cfg(test)]
