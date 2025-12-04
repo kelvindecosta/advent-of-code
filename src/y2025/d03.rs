@@ -2,52 +2,62 @@
 //!
 //! For a bank of size `n` with a choice of `capacity` batteries:
 //!
-//! - The first digit is found by taking the maximum of the first `n - capacity`
-//!   jotlages.
-//! - The next digit in the sequence is found by taking the maximum of the first
-//!   `n - capacity - 1` joltages, except for those that are before the previous
-//!   maximum.
-//! - We repeat until we've got `capacity` digits
+//! - We assume the last `capacity` batteries to be the best sequence initially.
+//! - Next, we take one battery at a time from the remaining, going backwards,
+//!   as our candidate to replace one of the batteries in the best sequence.
+//! - If the candidate is strictly greater than the current battery in the
+//!   sequence, we swap them. The displaced battery becomes the new "candidate"
+//!   and we attempt to slot it into the *next* position to the right. This
+//!   ensures higher values bubble to the front while preserving the relative
+//!   order of the displaced chain.
 //!
 //! For part 1 and part 2 the `capacity` is 2 and 12 respectively.
 
-pub fn parse(input: &str) -> Vec<&[u8]> {
-  input.lines().map(str::as_bytes).collect()
+use std::mem::replace;
+
+pub fn parse(input: &str) -> Vec<&str> {
+  input.lines().collect()
 }
 
-pub fn total_joltage(banks: &[&[u8]], capacity: usize) -> u64 {
+pub fn total_joltage<const CAPACITY: usize>(banks: &[&str]) -> u64 {
+  let mut batteries = [0; CAPACITY];
+
   banks
     .iter()
     .map(|&bank| {
-      let mut current_max = 0;
-      let mut current_start = 0;
+      let tail_start = bank.len() - CAPACITY;
+      // Assume the last `CAPACITY` batteries to be the best sequence.
+      // A benefit of doing so means we don't need to reorder them.
+      batteries.copy_from_slice(&bank.as_bytes()[tail_start..]);
 
-      (0..capacity).rev().fold(0, |joltage, place: usize| {
-        let window_end = bank.len() - place;
+      // For each remaining batter (in reverse)...
+      for mut candidate in bank[..tail_start].bytes().rev() {
+        for battery in &mut batteries {
+          // ...we try to slot the candidate into the batteries, if the current
+          // battery is bigger.
+          if candidate < *battery {
+            break;
+          }
+          // If it is, we swap the candidate, and then bubble the swapped
+          // battery
+          candidate = replace(battery, candidate);
+        }
+        // In doing so, we will get rid of the candidate or one of the batteries
+      }
 
-        (current_max, current_start) = (current_start..window_end).fold(
-          (0, 0),
-          |(window_max, window_start), i| {
-            if bank[i] > window_max {
-              (bank[i], i + 1)
-            } else {
-              (window_max, window_start)
-            }
-          },
-        );
-
-        10 * joltage + u64::from(current_max - b'0')
-      })
+      batteries
+        .iter()
+        .fold(0, |joltage, &b| 10 * joltage + u64::from(b - b'0'))
     })
     .sum()
 }
 
-pub fn p1(input: &[&[u8]]) -> u64 {
-  total_joltage(input, 2)
+pub fn p1(input: &[&str]) -> u64 {
+  total_joltage::<2>(input)
 }
 
-pub fn p2(input: &[&[u8]]) -> u64 {
-  total_joltage(input, 12)
+pub fn p2(input: &[&str]) -> u64 {
+  total_joltage::<12>(input)
 }
 
 #[cfg(test)]
