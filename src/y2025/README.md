@@ -7,3 +7,4 @@
 | [03](./d03.rs) | [Lobby](https://adventofcode.com/2025/day/3)               |          24.53 |
 | [04](./d04.rs) | [Printing Department](https://adventofcode.com/2025/day/4) |         107.66 |
 | [05](./d05.rs) | [Cafeteria](https://adventofcode.com/2025/day/5)           |          17.20 |
+| [06](./d06.rs) | [Trash Compactor](https://adventofcode.com/2025/day/6)     |          14.99 |
