@@ -9,3 +9,4 @@
 | [05](./d05.rs) | [Cafeteria](https://adventofcode.com/2025/day/5)           |          17.20 |
 | [06](./d06.rs) | [Trash Compactor](https://adventofcode.com/2025/day/6)     |          14.99 |
 | [07](./d07.rs) | [Laboratories](https://adventofcode.com/2025/day/7)        |          16.18 |
+| [08](./d08.rs) | [Playground](https://adventofcode.com/2025/day/8)          |         630.54 |
